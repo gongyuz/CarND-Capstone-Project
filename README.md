@@ -4,16 +4,10 @@
 
 This project is the final project of term 3 of the Udacity Self-Driving Car Engineer Nanodegree. Utilizing ROS nodes to implement waypoint tracking, control and classification of traffic lights, the final code will be implemented on a real-life autonomous vehichle, named Carla. The vehicle will be driven around a test track with the team's code.
 
-### Team: Driveline
-
-#### Members:
-Name | e-mail|Slack     
------| ----- | --------
-Zeng Yang [Team Lead] | zengyang2003@gmail.com | @zeyang
-Allen Lau | allen.c.lau@gmail.com | @allen8r
-Barend van Graan (a.k.a Bennie) | g4udevil@gmail.com | @g4udevil
-Swapnil Devikar | swap1712@gmail.com |@swap_1712
-Praveen Sukumaran | praveen.84@gmail.com | @praveen  
+### Self submission
+Name | e-mail
+-----| ----- 
+Gongyu Zhou | zhougongyu@gmail.com 
 
 ### System Architecture
 The following system architecture diagram shows the ROS nodes and topics used in the project.
@@ -86,10 +80,8 @@ that is responsible for returning ```Lane``` object to the final waypoints publi
 
 
 ##### Other considerations:
-While driving on the simulator, when the car reaches at the end of the track, it will stop driving.
-The reason for this is that, there is no roll-over of waypoints. Once the car has used all the waypoints, there are no further waypoints to process.
-Additional logic can be implemented to keep the car driving around the track for indifinite period of time/loops. This logic is implemented in ```tl_detection_debug``` branch
-and the behavior is controlled with ```KEEP_LOOPING``` flag.
+While driving on the simulator, the car starts driving off the track because the data from simulator publisher arrives too late. There's about 5s delay on receiving the data. I confirmed the observation by manually driving the car forward and stop, and print the position for the car. The position changes after about 5 seconds. 
+I asked on Student Hub, and there's no clear clue on why this could happen.
 
 
 
@@ -142,7 +134,7 @@ self.brake_pub = rospy.Publisher('/vehicle/brake_cmd',BrakeCmd, queue_size=1)
 ### Traffic Light Detection and Classification
 
 ##### Description
-The perception block consists of Obstacle Detection and Traffic Light Detection node. For the purpose of this project, we're only considering traffic lights as obstacles.
+The perception block consists of Obstacle Detection and Traffic Light Detection node. For the purpose of this project, the traffic red lights are considered as obstacles.
 Traffic Light Detection node takes in data from the ```/image_color```, ```/current_pose```, and ```/base_waypoints``` topics and publishes the locations to stop for red traffic lights to the ```/traffic_waypoint``` topic. As mentioned earlier, Waypoint Updater node will make use of this information to determine vehicle velocity for given waypoints.
 The traffic light classifier node is implemented separately and is independent of the Traffic light Detection node, which implements the logic to publish information regarding where the vehicle should come to a stop.
 
@@ -176,9 +168,7 @@ There are two tasks that are performed by traffic light detection node:
 Using these waypoint indices, we determine which light is ahead of the vehicle along the list of waypoints.
 
 2. Use the camera image data to classify the color of the traffic light. The core functionality of this step takes place in the ```get_light_state``` method of ```tl_detector.py```.
-In order to train the classifier we have utilized [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection).
-Detailed information about setup, training method is provided by @allen8r here: ```<project path>/src/master/ros/src/tl_detector/docs/training_the_classifiers.md```
-A python notebook with proof of concept for the classifier is provided by @allen8r here: ```<project path>/src/master/ros/src/tl_detector/poc/obj_traffic_light_hybrid_detector.ipynb```
+In order to train the classifier I used [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection).
 
 
 ***

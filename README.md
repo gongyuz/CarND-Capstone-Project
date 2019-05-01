@@ -4,7 +4,7 @@
 
 This project is the final project of term 3 of the Udacity Self-Driving Car Engineer Nanodegree. Utilizing ROS nodes to implement waypoint tracking, control and classification of traffic lights, the final code will be implemented on a real-life autonomous vehichle, named Carla. The vehicle will be driven around a test track with the team's code.
 
-### Self submission
+### Individual Submission
 Name | e-mail
 -----| ----- 
 Gongyu Zhou | zhougongyu@gmail.com 

@@ -123,16 +123,18 @@ class TLDetector(object):
             int: ID of traffic light color (specified in styx_msgs/TrafficLight)
 
         """
-        # For testing
-        return light.state
-        #if(not self.has_image):
-        #    self.prev_light_loc = None
-        #    return False
+        if(not self.has_image):
+            self.prev_light_loc = None
+            return False
 
-        #cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         #Get classification
-        #return self.light_classifier.get_classification(cv_image)
+        state = self.light_classifier.get_classification(cv_image)
+        #rospy.logwarn("light state is: {0} And classified light state: {1}".format(light.state, state))
+        # For testing
+        #return light.state
+        return state
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
@@ -168,7 +170,7 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            rospy.logwarn("Closest light wp: {0} And light state: {1}".format(line_wp_idx, state))
+            #rospy.logwarn("Closest light wp: {0} And light state: {1}".format(line_wp_idx, state))
             return line_wp_idx, state
 
         return -1, TrafficLight.UNKNOWN
